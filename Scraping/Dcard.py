@@ -1,20 +1,14 @@
-from bs4 import BeautifulSoup
-# from fake_useragent import UserAgent
 import requests
-# from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
-import time
-import random
 import json
 import sqlite3
 
-conn = sqlite3.connect('./Scraping/Data/ArticleList.db')
+conn = sqlite3.connect('./Scraping/Data/articleList.db')
  
 def createDataStruct():
     
     c = conn.cursor()
-    c.execute('''CREATE TABLE rating
-                (id text, title text, excerpt text, withImages bool, withVideos bool)''') 
+    c.execute('''CREATE TABLE articles
+                (id text, topic text, title text, excerpt text, withImages bool, withVideos bool)''') 
     conn.commit()
     conn.close()
 
@@ -30,17 +24,17 @@ def get_web_info(topic,popular,length):
         articleID = (data[x]['id'])
         articleTitle = (data[x]['title'])
         articleExcerpt = (data[x]['excerpt'])
-        articleTopics = (data[x]['topics'])
         articleWithImages = (data[x]['withImages'])
         articleWithVideos = (data[x]['withVideos'])
-        temp_list = [articleID,articleTitle,articleExcerpt,articleWithImages,articleWithVideos]
-        c.execute('INSERT INTO rating VALUES (?,?,?,?,?)', temp_list)
+        articleCategories = topic
+        temp_list = [articleID,articleCategories,articleTitle,articleExcerpt,articleWithImages,articleWithVideos]
+        c.execute('INSERT INTO articles VALUES (?,?,?,?,?,?)', temp_list)
         print(articleID, articleTitle)
 
 
-res = get_web_info("talk","true",30)
-
-# createDataStruct()
+res = get_web_info("mood","false",99)
 
 conn.commit()
 conn.close()
+
+# createDataStruct()
