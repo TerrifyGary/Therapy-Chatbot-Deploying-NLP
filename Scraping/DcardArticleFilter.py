@@ -1,7 +1,5 @@
-from unicodedata import category
 from bs4 import BeautifulSoup
 import requests
-import sqlite3
 import sqlite3
 import pandas as pd
 
@@ -35,7 +33,8 @@ def scapringArticleIndex(category, id):
         text = 'Status Code Error'
     else:
         soup = BeautifulSoup(r.text,'html.parser')
-        filter_1 = soup.find_all('div',class_='sc-4dc2ee70-0 fhYDEv')
+        filter_1 = soup.find_all('div',class_='sc-ebb1bedf-0 aiaXw')
+        
         text = filter_1[0].text
         
     return text
