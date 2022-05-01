@@ -20,9 +20,15 @@ To Do List :
 - [x] 利用 ```json``` 函式庫抓取，並找出想要的資料項。
 - [x] 存入 ```SQL``` database，方便未來做資料的存取。
 - [x] 簡單的篩選器，將適合的文章篩選出來。
-- [x] 利用 ```id``` 抓取符合條件的文章出來。
+- [x] 利用 ```id``` 抓取符合條件的文章出來，並建立新的 Filterd Articles 資料庫。
 
-## Part II. Lableing Training And Refining
+## Part II. Slicing Words And Data Preprocessing
+
+To Do List :
+- [x] 利用 CKIP 和 Jieba 做斷詞，並比較。
+- [ ] 將不需要的符號，過濾出來，讓我們的資料只留關鍵的詞。
+ 
+## Part III. Lableing Training And Refining
 
 To Do List :
 - [ ] 上標籤。
@@ -30,7 +36,7 @@ To Do List :
 - [ ] Refine 訓練結果，並多方評估 model 是否合適。
 （ 滾動式更新 ）
 
-## Part III. Front-End Engineering Connecting
+## Part IV. Front-End Engineering Connecting
 
 To Do List :
 - [ ] 間單 HTML UI。
