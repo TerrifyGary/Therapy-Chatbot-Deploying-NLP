@@ -50,16 +50,45 @@ def ckipSlice(content):
     
     return result
 
-cnx = sqlite3.connect('../Scraping/Data/FilteredArticles.db')
+def isEmoji(content):
+    if not content:
+        return False
+    if u"\U0001F600" <= content and content <= u"\U0001F64F":
+        return True
+    elif u"\U0001F300" <= content and content <= u"\U0001F5FF":
+        return True
+    elif u"\U0001F680" <= content and content <= u"\U0001F6FF":
+        return True
+    elif u"\U0001F1E0" <= content and content <= u"\U0001F1FF":
+        return True
+    else:
+        return False
+    
+def listFilter(inputList):    
+    temp = []
+    emoji = []
+    for x in inputList:
+        if x.isalpha():
+            temp.append(x)
+        if isEmoji(x) == True:
+            emoji.append(x)
+    return temp,emoji
+
+cnx = sqlite3.connect('./Scraping/Data/FilteredArticles.db')
 df = pd.read_sql_query("SELECT * FROM FilteredArticles", cnx)
 length = df.shape[0]
 
-
 test_article = df['content'][random.randint(0,length)]
+
+print(test_article)
 
 # 看你這邊想要用哪一種。
 # result = ckipSlice(test_article)
 result = jiebaSlice(test_article)
+categorizeList = listFilter(result)
+
+print(categorizeList)
+
 countFreuency = [[x,result.count(x)] for x in set(result)]
 
 print(countFreuency)

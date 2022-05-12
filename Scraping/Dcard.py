@@ -32,7 +32,7 @@ def get_web_info(topic,popular,length):
         print(articleID, articleTitle)
 
 
-res = get_web_info("mood","false",99)
+res = get_web_info("mood","true",99)
 
 conn.commit()
 conn.close()
