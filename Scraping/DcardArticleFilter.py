@@ -19,23 +19,41 @@ for x in range (length):
         aritcleFilteredTitle.append(df['title'][x])
         aritcleFilteredCategory.append(df['topic'][x])
         
-
-
 articleFilteredLength = len(aritcleFilteredID)
 
-# ============== Code Below Are For Scraping Filterd Data .db ============== #
+# ============== Codes Below Are For Getting Today's ClassName ============== #
 
-def scapringArticleIndex(category, id):
+def secretClassName():
+    url = "https://www.dcard.tw/f/relationship/p/235931948"
+    className = []
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text,'html.parser')
+    divs = soup.findAll('div')
+
+    for i in divs:
+        if i.has_attr('class'):
+            className.append(i.get('class'))
+    x = className[54]
+    target = x[0] + " " + x[1] # 這邊有點寫死，但能用就好 >W<"
+    return target
+
+# ============== Codes Below Are For Scraping Filterd Data .db ============== #
+
+def scapringArticleIndex(category, id, className):
     url = "https://www.dcard.tw/f/"+category+"/p/"+id
     r = requests.get(url)
+
     if r.status_code != 200:
         print('Status Code Error')
         text = 'Status Code Error'
     else:
         soup = BeautifulSoup(r.text,'html.parser')
-        filter_1 = soup.find_all('div',class_='sc-ebb1bedf-0 aiaXw')
-        
-        text = filter_1[0].text
+        #--- Below is to scrape the whole article ---#
+        filter_1 = soup.find_all('div',class_='sc-93f2df6d-0 gUmQDX')
+        if filter_1 is not None and len(filter_1) >= 1:
+            text = filter_1[0].text
+        else:
+            text = 'List Error'
         
     return text
     
@@ -54,13 +72,18 @@ def createDataStruct():
 
 c = conn.cursor()
 
-for x in range(100):
+target = secretClassName()
+print("Target = "+target)
+
+for x in range(articleFilteredLength):
     articleID = aritcleFilteredID[x]
     articleTitle = aritcleFilteredTitle[x]
     articleCategory = aritcleFilteredCategory[x]
-    articleContent = scapringArticleIndex(articleCategory,articleID)
+    articleContent = scapringArticleIndex(articleCategory,articleID,target)
     temp_list = [articleID, articleTitle,articleContent]
     c.execute('INSERT INTO FilteredArticles VALUES (?,?,?)', temp_list)
+    print("Now Finished = "+ str(round((x*100/articleFilteredLengthS))) +"% ʢᵕᴗᵕʡ, No."+str(x)+". ʕ·ᴥ·ʔ")
+    print(articleID)
 
 
 conn.commit()

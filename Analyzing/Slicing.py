@@ -7,10 +7,19 @@ import sys
 from ckiptagger import data_utils, construct_dictionary, WS, POS, NER
 
 def jiebaSlice(content):
+    stopword_set = []
+
+    with open('Analyzing/stopword.txt','r', encoding='utf-8') as stopwords:
+        for stopword in stopwords:
+            stopword_set.append(stopword.strip('\n'))
+
+    conten = content.strip('\n')
     words = jieba.posseg.cut(content)
     slicedWords = []
     for word, flag in words:
-        slicedWords.append(word)
+        if word not in stopword_set:
+            slicedWords.append(word)
+
     return slicedWords
     
 def ckipSlice(content):
@@ -74,21 +83,37 @@ def listFilter(inputList):
             emoji.append(x)
     return temp,emoji
 
-cnx = sqlite3.connect('./Scraping/Data/FilteredArticles.db')
-df = pd.read_sql_query("SELECT * FROM FilteredArticles", cnx)
-length = df.shape[0]
+def main():        
+    cnx = sqlite3.connect('./Scraping/Data/FilteredArticles.db')
+    df = pd.read_sql_query("SELECT * FROM FilteredArticles", cnx)
+    length = df.shape[0]
 
-test_article = df['content'][random.randint(0,length)]
+    test_article = df['content'][random.randint(0,length)]
 
-print(test_article)
+    print(test_article)
 
-# 看你這邊想要用哪一種。
-# result = ckipSlice(test_article)
-result = jiebaSlice(test_article)
-categorizeList = listFilter(result)
+    # 看你這邊想要用哪一種。
+    # result = ckipSlice(test_article)
+    
+    result = jiebaSlice(test_article)
+    categorizeList = listFilter(result)
 
-print(categorizeList)
+    print(categorizeList)
 
-countFreuency = [[x,result.count(x)] for x in set(result)]
+    countFreuency = [[x,result.count(x)] for x in set(result)]
 
-print(countFreuency)
+    print(countFreuency)
+
+    output = open('Analyzing/dcard_seg.txt', 'w', encoding='utf-8')
+    for x in range(length):
+        currentArticle = df["content"][x]
+        if currentArticle!="Status Code Error" and currentArticle!="List Error":
+            sliceArticle = jiebaSlice(currentArticle)
+            categorizeList,emojiList = listFilter(sliceArticle)
+            for y in categorizeList:
+                output.write(y+' ')
+            print("ʢᵕᴗᵕʡ "+ str(round((x*100/length))) +"% Data. ʕ·ᴥ·ʔ")
+    output.close()
+
+if __name__ == "__main__":
+    main()
