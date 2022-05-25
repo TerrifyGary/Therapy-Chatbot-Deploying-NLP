@@ -13,7 +13,8 @@ def jiebaSlice(content):
         for stopword in stopwords:
             stopword_set.append(stopword.strip('\n'))
 
-    conten = content.strip('\n')
+    content = content.strip('\n')
+    # jieba.set_dictionary("jieba_dict/dict.txt.big")
     words = jieba.posseg.cut(content)
     slicedWords = []
     for word, flag in words:
@@ -112,7 +113,7 @@ def main():
             categorizeList,emojiList = listFilter(sliceArticle)
             for y in categorizeList:
                 output.write(y+' ')
-            print("ʢᵕᴗᵕʡ "+ str(round((x*100/length))) +"% Data. ʕ·ᴥ·ʔ")
+        print("ʢᵕᴗᵕʡ "+str(x)+"/"+str(length)+" ----- "+ str(round((x*100/length))) +"% Data. ʕ·ᴥ·ʔ")
     output.close()
 
 if __name__ == "__main__":

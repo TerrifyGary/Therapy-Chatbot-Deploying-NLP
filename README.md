@@ -26,7 +26,8 @@ To Do List :
 
 To Do List :
 - [x] 利用 CKIP 和 Jieba 做斷詞，並比較。
-- [ ] 將不需要的符號，過濾出來，讓我們的資料只留關鍵的詞。
+- [x] 將不需要的符號，過濾出來，讓我們的資料只留關鍵的詞。
+- [x] 將表情符號抓出來，並特別做處理。
  
 ## Part III. Lableing Training And Refining
 

@@ -82,7 +82,7 @@ for x in range(articleFilteredLength):
     articleContent = scapringArticleIndex(articleCategory,articleID,target)
     temp_list = [articleID, articleTitle,articleContent]
     c.execute('INSERT INTO FilteredArticles VALUES (?,?,?)', temp_list)
-    print("Now Finished = "+ str(round((x*100/articleFilteredLengthS))) +"% ʢᵕᴗᵕʡ, No."+str(x)+". ʕ·ᴥ·ʔ")
+    print("Now Finished = "+ str(round((x*100/articleFilteredLength))) +"% ʢᵕᴗᵕʡ, No."+str(x)+". ʕ·ᴥ·ʔ")
     print(articleID)
 
 
