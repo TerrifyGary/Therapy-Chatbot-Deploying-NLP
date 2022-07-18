@@ -85,7 +85,6 @@ for x in range(articleFilteredLength):
     print("Now Finished = "+ str(round((x*100/articleFilteredLength))) +"% ʢᵕᴗᵕʡ, No."+str(x)+". ʕ·ᴥ·ʔ")
     print(articleID)
 
-
 conn.commit()
 conn.close()
 
