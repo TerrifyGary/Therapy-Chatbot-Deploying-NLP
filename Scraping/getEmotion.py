@@ -1,7 +1,9 @@
 import cloudscraper
+import time
+
 
 def main():
-    print(getEmotions('239465600'))
+    print(getEmotions('238643904'))
 
 #------- 字元轉換成數字 -------#
 def convertDigit(words):
@@ -16,25 +18,32 @@ def convertDigit(words):
 
 def getEmotions(postID):
     #------- 抓取目標文章資訊 -------#
+    timeout = time.time() + 5
     url = "https://www.dcard.tw/service/api/v2/posts/"+postID
+    print(url)
     isTarget = False
 
     while isTarget==False:
         scraper = cloudscraper.CloudScraper()  # CloudScraper inherits from requests.Session
         scraper = cloudscraper.create_scraper()  # returns a CloudScraper instance
         result = scraper.get(url).text
-        if result[0]!='<':
+        if result[0] == '{':
             isTarget = True
+        if time.time() > timeout:
+            mood = ["Article Not Found"]*6
+            print("Did Not Get Emotion : "+postID + " ." )
             break
 
     #------- 切割字串元件 -------#
     data = result.replace('{','')
     data = data.replace('}','')
     data = data.replace('"','')
+    data = data.replace('[','')
+    data = data.replace(']','')
     output = data.split(',')
 
     #------- 宣告尋找目標 -------#
-    isAllEmotionError = True
+    isEmotionError = [False, False, False, False, False, False]
     heartReaction = "reactions:[id:286f599c-f86a-4932-82f0-f5a06f1eca03"
     laughReaction = "id:e8e6bc5d-41b0-4129-b134-97507523d7ff"
     shockReaction = "id:4b018f48-e184-445f-adf1-fc8e04ba09b9"
@@ -44,58 +53,68 @@ def getEmotions(postID):
     
     #------- 條件式抓取目標 -------#
     if  heartReaction in output:
-        isAllEmotionError = False
         labelHeart = output.index(heartReaction)
     else:
         print("labelHeart Error")
+        isEmotionError[0] = True
         labelHeart = 0
     
     if laughReaction in output:
-        isAllEmotionError = False
         labelLaugh = output.index(laughReaction)
     else:
         print("labelLaugh Error")
+        isEmotionError[1] = True
         labelLaugh = 0
 
+
     if  shockReaction in output:
-        isAllEmotionError = False
         labelShock = output.index(shockReaction)
     else:
         print("labelShock Error")
+        isEmotionError[2] = True
         labelShock = 0
 
     if cryReaction in output:
-        isAllEmotionError = False
+
         labelCry = output.index(cryReaction)
     else:
         print("labelCry Error")
+        isEmotionError[3] = True
         labelCry = 0
 
+
     if madReaction in output:
-        isAllEmotionError = False
+
         labelMad = output.index(madReaction)
     else:
         print("labelMad Error")
+        isEmotionError[4] = True
         labelMad = 0
 
+
     if admiredReaction in output:
-        isAllEmotionError = False
         labelAdmired = output.index(admiredReaction)
     else:
         print("labelAdmired Error")
+        isEmotionError[5] = True
         labelAdmired = 0
+
 
     #------- 判斷情緒是否都有抓到 -------#
     #------- 並將目標轉換成數字 -------#
-    if  isAllEmotionError == True:
-        # print("Emotional Error")
-        return "Emotional Error."
+    EmotionIndex = [labelHeart, labelLaugh, labelShock, labelCry, labelMad, labelAdmired]
+    mood = [0, 0, 0, 0, 0, 0]
+    if not any(isEmotionError) == True:
+        mood = [0, 0, 0, 0, 0, 0]
     else:
-        mood = [output[labelHeart+1], output[labelLaugh+1], output[labelShock+1], output[labelCry+1], output[labelMad+1], output[labelAdmired+1]]
-        numbers = []
-        for x in mood:
-            numbers.append(convertDigit(x))
-        return numbers
+        for x in range(len(isEmotionError)):
+            if isEmotionError[x] == True:
+                mood[x] = 0
+            else:
+                indexEmotion = EmotionIndex[x]+1
+                mood[x] = convertDigit(output[indexEmotion])
+    
+    return mood
 
 if __name__ == "__main__":
     main()

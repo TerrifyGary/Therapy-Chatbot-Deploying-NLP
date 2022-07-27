@@ -89,10 +89,8 @@ def new_get_web_info(topic,popular,length):
         print(articleID, articleTitle)
 
 # res = get_web_info("mood","false",99)
-res = new_get_web_info("mood","true",99)
-
+res = new_get_web_info("mood","false",99)
 conn.commit()
 conn.close()
-
 # createDataStruct()
 #----- 嗚嗚嗚嗚 為什麼沒事要加上那個害我全部都要重改 希望不要再被改了哭哭 -----#
