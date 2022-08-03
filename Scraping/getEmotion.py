@@ -30,10 +30,10 @@ def getEmotions(postID):
         if result[0] == '{':
             isTarget = True
         if time.time() > timeout:
-            mood = ["Article Not Found"]*6
+            mood = ["Emotion Error"]*6
             print("Did Not Get Emotion : "+postID + " ." )
-            break
-
+            return mood
+    time.sleep(3)
     #------- 切割字串元件 -------#
     data = result.replace('{','')
     data = data.replace('}','')
