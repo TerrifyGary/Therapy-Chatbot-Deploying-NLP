@@ -55,14 +55,14 @@ def getEmotions(postID):
     if  heartReaction in output:
         labelHeart = output.index(heartReaction)
     else:
-        print("labelHeart Error")
+        # print("labelHeart Error")
         isEmotionError[0] = True
         labelHeart = 0
     
     if laughReaction in output:
         labelLaugh = output.index(laughReaction)
     else:
-        print("labelLaugh Error")
+        # print("labelLaugh Error")
         isEmotionError[1] = True
         labelLaugh = 0
 
@@ -70,7 +70,7 @@ def getEmotions(postID):
     if  shockReaction in output:
         labelShock = output.index(shockReaction)
     else:
-        print("labelShock Error")
+        # print("labelShock Error")
         isEmotionError[2] = True
         labelShock = 0
 
@@ -78,7 +78,7 @@ def getEmotions(postID):
 
         labelCry = output.index(cryReaction)
     else:
-        print("labelCry Error")
+        # print("labelCry Error")
         isEmotionError[3] = True
         labelCry = 0
 
@@ -87,7 +87,7 @@ def getEmotions(postID):
 
         labelMad = output.index(madReaction)
     else:
-        print("labelMad Error")
+        # print("labelMad Error")
         isEmotionError[4] = True
         labelMad = 0
 
@@ -95,7 +95,7 @@ def getEmotions(postID):
     if admiredReaction in output:
         labelAdmired = output.index(admiredReaction)
     else:
-        print("labelAdmired Error")
+        # print("labelAdmired Error")
         isEmotionError[5] = True
         labelAdmired = 0
 

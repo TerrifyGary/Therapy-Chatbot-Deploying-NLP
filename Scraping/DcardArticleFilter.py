@@ -38,6 +38,7 @@ def createDataStruct():
                 (id text, title text, content text, heartReaction text, laughReaction text, shockReaction text, cryReaction text, madReaction text, admiredReaction text)''') 
     conn.commit()
     conn.close()
+    print("Database Created Successfully.")
 
 def main():
     # ============== Code Below Are For Load In Our .db ============== #
@@ -56,35 +57,41 @@ def main():
             aritcleFilteredTitle.append(df['title'][x])
             aritcleFilteredCategory.append(df['topic'][x])
             
-    articleFilteredLength = len(aritcleFilteredID) 
-    # articleFilteredLength = 3 # 先試試看
+    #
 
     # ============== Code Below Are For Constructing The .db ============== #
     conn = sqlite3.connect('./Scraping/Data/FilteredArticles.db')
     
     c = conn.cursor()
-    countContentNotFound = 0
-    previousEnd = 0
-    minute = 1
     
-    for x in range(previousEnd,articleFilteredLength,1):
+    countContentNotFound = 0
+    previousEnd = 405
+    minute = 5
+
+    articleFilteredLength = len(aritcleFilteredID) 
+    # articleFilteredLength = previousEnd+3# 先試試看
+    
+    for x in range(previousEnd+1,previousEnd+30,1):
         if countContentNotFound == 3:
             print("Too Many Content Not Found.")
             break
         articleID = aritcleFilteredID[-x]
-        print(articleID)
+        print("1. "+articleID)
         articleTitle = aritcleFilteredTitle[-x]
+        print("2. "+articleTitle)
         articleContent = getContent(articleID)
         if articleContent == 'Article Not Found':
             countContentNotFound += 1
+            pass
         else:
-            time.sleep(minute*10)
-        print(articleContent)
-        heartReaction, laughReaction, shockReaction, cryReaction, madReaction, admiredReaction = getEmotions(articleID)
-        temp_list = [articleID, articleTitle, articleContent, heartReaction, laughReaction, shockReaction, cryReaction, madReaction, admiredReaction]
-        c.execute('INSERT INTO FilteredArticles VALUES (?,?,?,?,?,?,?,?,?)', temp_list)
+            time.sleep(minute*60)
+            print("3. "+articleContent)
+            heartReaction, laughReaction, shockReaction, cryReaction, madReaction, admiredReaction = getEmotions(articleID)
+            print(heartReaction, laughReaction, shockReaction, cryReaction, madReaction, admiredReaction)
+            temp_list = [articleID, articleTitle, articleContent, heartReaction, laughReaction, shockReaction, cryReaction, madReaction, admiredReaction]
+            c.execute('INSERT INTO FilteredArticles VALUES (?,?,?,?,?,?,?,?,?)', temp_list)
         print("Now Finished = "+ str(round((x*100/articleFilteredLength))) +"% ʢᵕᴗᵕʡ, No."+str(x)+". ʕ·ᴥ·ʔ")
-
+        time.sleep(minute*2)
 
     conn.commit()
     conn.close()
