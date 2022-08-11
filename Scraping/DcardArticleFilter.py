@@ -65,13 +65,14 @@ def main():
     c = conn.cursor()
     
     countContentNotFound = 0
-    previousEnd = 405
-    minute = 5
+    previousEnd = 1158
+    minute = 1
 
-    articleFilteredLength = len(aritcleFilteredID) 
+    articleFilteredLength = len(aritcleFilteredID)
+    print(articleFilteredLength)
     # articleFilteredLength = previousEnd+3# 先試試看
     
-    for x in range(previousEnd+1,previousEnd+30,1):
+    for x in range(previousEnd+1,previousEnd+100,1):
         if countContentNotFound == 3:
             print("Too Many Content Not Found.")
             break
