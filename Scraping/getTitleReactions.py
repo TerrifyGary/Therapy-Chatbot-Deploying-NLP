@@ -1,3 +1,7 @@
+####################################
+# 抓取文章的標題、留言數、愛心數、收藏數 #
+####################################
+
 import requests
 import json
 import sqlite3
@@ -78,16 +82,17 @@ def new_get_web_info(topic,popular,length):
             allCollectionCount.append(temp)
 
     #----- 可以存進去資料庫了 -----#
-    for x in range(length):
+    for x in range(len(allID)):
         articleID = (allID[x])
         articleTitle = (allTitle[x])
         articleCommentCount = (allCommentCount[x])
         articleLikeCount = (allLikeCount[x])
         articleCollectionCount = (allCollectionCount[x])
+        feedbackList = [articleCommentCount, articleLikeCount, articleCollectionCount]
         articleCategories = topic
         temp_list = [articleID,articleCategories,articleTitle, articleCommentCount, articleLikeCount, articleCollectionCount]
         c.execute('INSERT INTO ArticlesWithReactions VALUES (?,?,?,?,?,?)', temp_list)
-        print(articleID, articleTitle)
+        print(articleID, articleTitle), feedbackList
 
 
 def main():
@@ -95,6 +100,7 @@ def main():
     topic = ['mood','relationship', 'talk']
     for x in topic:
         new_get_web_info(x,"true",99)
+        new_get_web_info(x,"false",99)
     conn.commit()
     conn.close()
 

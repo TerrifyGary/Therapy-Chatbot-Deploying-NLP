@@ -1,6 +1,9 @@
+############################################
+# 情緒的抓取，在 DcardArticleFilter中會用到。 ＃
+############################################
+
 import cloudscraper
 import time
-
 
 def main():
     print(getEmotions('238643904'))

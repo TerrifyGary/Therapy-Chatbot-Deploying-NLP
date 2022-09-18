@@ -1,3 +1,7 @@
+##############################################
+# 從抓取下來的文章列表中篩選，並抓取標題、內文、情緒 ＃
+##############################################
+
 import sqlite3
 import pandas as pd
 import cloudscraper
@@ -65,14 +69,14 @@ def main():
     c = conn.cursor()
     
     countContentNotFound = 0
-    previousEnd = 1158
-    minute = 1
+    previousEnd = 1190
+    minute = 0
 
     articleFilteredLength = len(aritcleFilteredID)
     print(articleFilteredLength)
     # articleFilteredLength = previousEnd+3# 先試試看
     
-    for x in range(previousEnd+1,previousEnd+100,1):
+    for x in range(previousEnd+1,previousEnd+20,1):
         if countContentNotFound == 3:
             print("Too Many Content Not Found.")
             break
