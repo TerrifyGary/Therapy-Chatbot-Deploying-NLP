@@ -1,3 +1,7 @@
+########################
+# 將文章的熱門度進行label #
+########################
+
 import sqlite3
 import pandas as pd
 # Create your connection.
@@ -37,6 +41,8 @@ def main():
 
     for x in range(length):
         print(titles[x], labels[x])
+    
+    print(length)
 
 if __name__ == "__main__":
     main()
