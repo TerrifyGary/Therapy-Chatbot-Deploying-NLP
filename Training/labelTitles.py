@@ -4,7 +4,7 @@
 
 import sqlite3
 import pandas as pd
-# Create your connection.
+
 def main():
     cnx = sqlite3.connect('./Scraping/Data/labelTitle.db')
     df = pd.read_sql_query("SELECT * FROM labelTitle", cnx)
