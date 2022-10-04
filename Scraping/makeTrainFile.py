@@ -38,6 +38,7 @@ def main():
     conn.commit()
     conn.close()
 
+    print(length)
 
 if __name__ == "__main__":
     main()

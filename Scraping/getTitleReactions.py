@@ -92,7 +92,11 @@ def new_get_web_info(topic,popular,length):
         articleCategories = topic
         temp_list = [articleID,articleCategories,articleTitle, articleCommentCount, articleLikeCount, articleCollectionCount]
         c.execute('INSERT INTO ArticlesWithReactions VALUES (?,?,?,?,?,?)', temp_list)
-        print(articleID, articleTitle), feedbackList
+        print(articleID, articleTitle)
+
+    conn.commit()
+    conn.close()
+
 
 
 def main():
@@ -101,8 +105,7 @@ def main():
     for x in topic:
         new_get_web_info(x,"true",99)
         new_get_web_info(x,"false",99)
-    conn.commit()
-    conn.close()
+    
 
 
 if __name__ == "__main__":
