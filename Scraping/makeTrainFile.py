@@ -27,6 +27,8 @@ def main():
         temp = int(df['commentcount'][x]) + int(df['likecount'][x]) + int(df['collectioncont'][x]) 
         popValue.append(temp)
 
+    print(len(popValue))
+
     c = conn.cursor()
 
     for x in range(length):
