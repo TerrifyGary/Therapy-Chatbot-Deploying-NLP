@@ -4,8 +4,9 @@
 
 import sqlite3
 import pandas as pd
+import os.path
 
-conn = sqlite3.connect('./Scraping/Data/labelTitle.db')
+
 
 def createDataStruct():
     conn = sqlite3.connect('./Scraping/Data/labelTitle.db')
@@ -16,7 +17,8 @@ def createDataStruct():
     conn.close()
     print("Database Created Successfully.")
 
-def main():
+def main(PATH):
+    conn = sqlite3.connect(PATH)
     cnx = sqlite3.connect('./Scraping/Data/ArticleReactions.db')
     df = pd.read_sql_query("SELECT * FROM ArticlesWithReactions", cnx)
 
@@ -43,5 +45,9 @@ def main():
     print(length)
 
 if __name__ == "__main__":
-    main()
-    # createDataStruct()
+    PATH = './Scraping/Data/labelTitle.db'
+    isFile = os.path.exists(PATH)
+    if isFile:
+        main(PATH)
+    else:
+        createDataStruct()
