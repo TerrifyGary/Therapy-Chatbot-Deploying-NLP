@@ -23,42 +23,15 @@ def createDataStruct():
     conn.close()
     print('ArticleReactions Created Sucessfully.')
 
-def get_web_info_json(topic,popular,length):
+def get_web_info_json(topic,popular):
     c = conn.cursor()
-    result = requests.get(f"https://www.dcard.tw/service/api/v2/forums/{topic}/posts?popular={popular}&limit={str(length)}")
+
+    result = requests.get(f"https://www.dcard.tw/service/api/v2/forums/{topic}/posts?popular={popular}&limit=99").json()
     data = json.loads(result.text)
-    print(result)
-
-    for x in range(length):
-        articleID = (data[x]['id'])
-        articleTitle = (data[x]['title'])
-        articleCommentCount = (data[x]['excerpt'])
-        articleLikeCount = (data[x]['withImages'])
-        articleCollectionCount = (data[x]['withVideos'])
-        articleCategories = topic
-        temp_list = [articleID,articleCategories,articleTitle,articleCommentCount,articleLikeCount,articleCollectionCount]
-        c.execute('INSERT INTO ArticlesWithReactions VALUES (?,?,?,?,?,?)', temp_list)
-        print(articleID, articleTitle)
     
-    conn.commit()
-    conn.close()
-
-def get_web_info_selenium(topic,popular):
-    c = conn.cursor()
-
-    url = f"https://www.dcard.tw/service/api/v2/forums/{topic}/posts?popular={popular}&limit={str(99)}"
-
-    driver = webdriver.Firefox()
-    driver.get(url)
-    html = driver.page_source
-    time.sleep(3)
-    driver.close()
-
-    soup = BeautifulSoup(html,"html.parser")
-    data = json.loads(soup.text)
-    # length = len(data['id'])
-
-    for x in range(90):
+    print(result)
+    length = len(data.shape[0])
+    for x in range(length):
         articleID = (data[x]['id'])
         articleTitle = (data[x]['title'])
         articleCommentCount = (data[x]['totalCommentCount'])
@@ -70,6 +43,84 @@ def get_web_info_selenium(topic,popular):
         print(articleID, articleTitle)
     
     conn.commit()
+    conn.close()
+
+def get_web_info_selenium(topic,popular):
+    c = conn.cursor()
+
+    url = f"view-source:https://www.dcard.tw/service/api/v2/forums/{topic}/posts?popular={popular}&limit={str(99)}"
+    print(url)
+
+    driver = webdriver.Firefox()
+    driver.maximize_window()
+    driver.get(url)
+    
+
+    # time.sleep(10)
+    data = driver.page_source
+    # html = driver.find_element_by_tag_name('pre').text
+    # print("HTML")
+    driver.quit()
+    data = data.replace('{','')
+    data = data.replace('}','')
+    data = data.replace('[','')
+    data = data.replace(']','')
+    data = data.replace('"','')
+    output = data.split(',')
+
+    #----- 抓取要的重點 -----#
+    allID, allTitle, allCommentCount, allLikeCount, allCollectionCount = [], [], [], [], []
+    keyID, keyTitle, keyCommentCount, keyLikeCount, keyCollectionCount = 'id:', 'tit', 'com', 'lik', 'col'
+    for x in output:
+        if x[:3] == keyID and len(x)<=13:
+            temp = x
+            temp = temp.split(":")[-1]
+            allID.append(temp)
+        elif x[:3] == keyTitle:
+            temp = x
+            temp = temp.split(":")[-1]
+            allTitle.append(temp)
+        elif x[:3] == keyCommentCount:
+            temp = x
+            temp = temp.split(":")[-1]
+            allCommentCount.append(temp)
+        elif x[:3] == keyLikeCount:
+            temp = x
+            temp = temp.split(":")[-1]
+            allLikeCount.append(temp)
+        elif x[:3] == keyCollectionCount:
+            temp = x
+            temp = temp.split(":")[-1]
+            allCollectionCount.append(temp)
+
+    #----- 可以存進去資料庫了 -----#
+    for x in range(len(allID)):
+        articleID = (allID[x])
+        articleTitle = (allTitle[x])
+        articleCommentCount = (allCommentCount[x])
+        articleLikeCount = (allLikeCount[x])
+        articleCollectionCount = (allCollectionCount[x])
+        feedbackList = [articleCommentCount, articleLikeCount, articleCollectionCount]
+        articleCategories = topic
+        temp_list = [articleID,articleCategories,articleTitle, articleCommentCount, articleLikeCount, articleCollectionCount]
+        c.execute('INSERT INTO ArticlesWithReactions VALUES (?,?,?,?,?,?)', temp_list)
+        print(articleID, articleTitle)
+
+    conn.commit()
+
+    # for x in range(99):
+    #     articleID = (data[x]['id'])
+    #     articleTitle = (data[x]['title'])
+    #     articleCommentCount = (data[x]['totalCommentCount'])
+    #     articleLikeCount = (data[x]['likeCount'])
+    #     articleCollectionCount = (data[x]['collectionCount'])
+    #     articleCategories = topic
+    #     temp_list = [articleID,articleCategories,articleTitle,articleCommentCount,articleLikeCount,articleCollectionCount]
+    #     c.execute('INSERT INTO ArticlesWithReactions VALUES (?,?,?,?,?,?)', temp_list)
+    #     print(articleID, articleTitle)
+        
+    #     conn.commit()
+    
     
 
 
