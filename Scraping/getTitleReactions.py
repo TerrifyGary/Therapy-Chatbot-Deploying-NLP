@@ -213,7 +213,7 @@ def main():
     # get_web_info_selenium("relationship","true")
     # get_web_info_selenium("relationship","false")
     # get_web_info_selenium("talk","true")
-    # get_web_info_selenium("talk","false")
+    get_web_info_selenium("talk","false")
 
 
 
