@@ -95,12 +95,14 @@ class BertBinaryClassifier(nn.Module):
         # 因為有十種 labels 所以，應該要是 10 才合理，我覺得啦
         # self.linear = nn.Linear(768, 10)
         self.sigmoid = nn.Sigmoid()
+        # 可以考慮加入 softmax, cross entropy
     
     def forward(self, tokens, masks=None):
         _, pooled_output = self.bert(tokens, attention_mask=masks, output_all_encoded_layers=False)
         dropout_output = self.dropout(pooled_output)
         linear_output = self.linear(dropout_output)
-        proba = self.sigmoid(linear_output)
+        # proba = self.sigmoid(linear_output)
+        # 應該要輸出十個數值出來
         return proba
 
 # ---- 載入cuda、model ---- #
