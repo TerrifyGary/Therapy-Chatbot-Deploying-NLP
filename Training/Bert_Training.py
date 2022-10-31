@@ -91,7 +91,7 @@ class BertBinaryClassifier(nn.Module):
         super(BertBinaryClassifier, self).__init__()
         self.bert = BertModel.from_pretrained('bert-base-chinese')
         self.dropout = nn.Dropout(dropout)
-        self.linear = nn.Linear(768, 1)
+        self.linear = nn.Linear(768, 10)
         # 因為有十種 labels 所以，應該要是 10 才合理，我覺得啦
         # self.linear = nn.Linear(768, 10)
         self.sigmoid = nn.Sigmoid()
