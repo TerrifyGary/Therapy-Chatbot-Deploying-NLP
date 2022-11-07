@@ -208,9 +208,13 @@ def get_web_info_cloudscraper(topic,popular):
 
 
 def main():
+
+
     # get_web_info_selenium("mood","true")
     # get_web_info_selenium("mood","false")
     # get_web_info_selenium("relationship","true")
+
+
     get_web_info_selenium("relationship","false")
     get_web_info_selenium("talk","true")
     get_web_info_selenium("talk","false")
