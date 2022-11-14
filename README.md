@@ -5,6 +5,10 @@
 2. 執行 ```conda activate```
 3. 確認所使用的所有函式庫都有安裝妥當。
 
+摘要 : 
+
+- 利用網路論壇標題，經由深度學習 NLP 模型訓練後，將文章的各項指標綜合評比成一個熱門指標，可用來作為預測標題與熱門度的方式。
+
 目標 : 
 
 - 利用爬蟲的方式，將 Dcard 文章抓取下來，將標題、摘要、ID等的關鍵資料，存到 SQL 的資料庫中。
@@ -32,8 +36,8 @@ To Do List :
 ## Part III. Lableing Training And Refining
 
 To Do List :
-- [ ] 上標籤。
-- [ ] 找 Pre-trained models。
+- [x] 上標籤。
+- [x] 找 Pre-trained models。
 - [ ] Refine 訓練結果，並多方評估 model 是否合適。
 （ 滾動式更新 ）
 
