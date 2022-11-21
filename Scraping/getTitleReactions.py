@@ -210,14 +210,14 @@ def get_web_info_cloudscraper(topic,popular):
 def main():
 
 
-    # get_web_info_selenium("mood","true")
-    # get_web_info_selenium("mood","false")
-    # get_web_info_selenium("relationship","true")
+    get_web_info_selenium("mood","true")
+    get_web_info_selenium("mood","false")
+    get_web_info_selenium("relationship","true")
 
 
-    get_web_info_selenium("relationship","false")
-    get_web_info_selenium("talk","true")
-    get_web_info_selenium("talk","false")
+    # get_web_info_selenium("relationship","false")
+    # get_web_info_selenium("talk","true")
+    # get_web_info_selenium("talk","false")
 
 
 
@@ -228,7 +228,6 @@ def main():
     #     get_web_info_selenium(x,"false")
     #     # time.sleep(60)
     conn.close()
-
 
 if __name__ == "__main__":
     main()
