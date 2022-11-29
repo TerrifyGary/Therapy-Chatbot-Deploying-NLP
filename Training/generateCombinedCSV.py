@@ -80,22 +80,9 @@ def getData():
     for i in range(checkTimes):
         checkList.append(oneTitle[-i])
 
-    # ------ 隨機排列 ------ #
 
     allTitles = [oneTitle,twoTitle,threeTitle,fourTitle,fiveTitle,sixTitle,sevenTitle,eightTitle,nineTitle,tenTitle]
-    rn.seed(321)
-    for x in allTitles:
-        x = rn.shuffle(x)
 
-    for x in range(checkTimes):
-        # print(str(x+1) + ". 比較是否有 shuffle 到 ： a." + checkList[x] + "  b."+oneTitle[-x])
-        if checkList[x]==oneTitle[-x]:
-            isShuffled = False
-        else:
-            isShuffled = True
-    
-    if isShuffled==False:
-        print("好像沒有Shuffle到唷。")
     # ------ 標上label ------ #
 
     allLabels = [ 
@@ -131,8 +118,7 @@ def getData():
             testTitle.append(a[z])
             testLabel.append(b[z])
     
-    # print(trainTitle[3],trainLabel[3])
-    # print(testTitle[3],testLabel[3])
+
     trainData, testData = [trainTitle,trainLabel], [testTitle,testLabel]
     return [trainData, testData]
 
