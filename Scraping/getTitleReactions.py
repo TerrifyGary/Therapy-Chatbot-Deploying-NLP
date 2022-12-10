@@ -11,7 +11,6 @@ import cloudscraper
 import time
 
 
-
 conn = sqlite3.connect('./Scraping/Data/ArticleReactions.db')
 
 def createDataStruct():
@@ -217,8 +216,6 @@ def main():
     get_web_info_selenium("relationship","false")
     get_web_info_selenium("talk","true")
     get_web_info_selenium("talk","false")
-
-
 
     # topic = ['mood','relationship', 'talk']
     # for x in topic:
