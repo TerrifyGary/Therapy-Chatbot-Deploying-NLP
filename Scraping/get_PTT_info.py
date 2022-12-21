@@ -22,7 +22,7 @@ def get_web_info():
     title_url_exitst = []   
     
     pages = 1000
-    begin_page = 36037
+    begin_page = 35037
 
     print("====== GET URL ======")
     for x in range(pages):
